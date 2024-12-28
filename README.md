@@ -31,13 +31,13 @@ cd SketchAgent
 Set up the environment:
 ```
 conda env create -f environment.yml
-conda activate sketch_agent
+conda activate competitive_sketch_agent
 ```
 
 **For Mac users**, use the following environment file instead:
 ```
 conda env create -f mac_environment.yml
-conda activate sketch_agent
+conda activate competitive_sketch_agent
 ```
 If python flashes a warning at you, try reinstalling `cairosvg`:
 ```

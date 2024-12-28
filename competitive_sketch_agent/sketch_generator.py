@@ -1,5 +1,5 @@
 import argparse
-import anthropic
+# import anthropic
 import ast
 import cairosvg
 import json
@@ -7,7 +7,7 @@ import os
 import utils
 import traceback
 
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from PIL import Image
 from prompts import sketch_first_prompt, system_prompt, gt_example
 
@@ -16,7 +16,7 @@ def call_argparse():
     parser = argparse.ArgumentParser(description='Process Arguments')
     
     # General
-    parser.add_argument('--concept_to_draw', type=str, default="cat")
+    parser.add_argument('--concept_to_draw', type=str, default="car")
     parser.add_argument('--seed_mode', type=str, default='deterministic', choices=['deterministic', 'stochastic'])
     parser.add_argument('--path2save', type=str, default=f"results/test")
     parser.add_argument('--model', type=str, default='claude-3-5-sonnet-20240620')
@@ -60,9 +60,9 @@ class SketchApp:
         # LLM Setup (you need to provide your ANTHROPIC_API_KEY in your .env file)
         self.cache = False
         self.max_tokens = 3000
-        load_dotenv()
-        claude_key = os.getenv("ANTHROPIC_API_KEY")
-        self.client = anthropic.Anthropic(api_key=claude_key)
+        # load_dotenv()
+        # claude_key = os.getenv("ANTHROPIC_API_KEY")
+        # self.client = anthropic.Anthropic(api_key=claude_key)
         self.model = args.model
         self.input_prompt = sketch_first_prompt.format(concept=args.concept_to_draw, gt_sketches_str=gt_example)
         self.gen_mode = args.gen_mode
