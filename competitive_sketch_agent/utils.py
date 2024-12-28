@@ -4,6 +4,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 import base64
+import yaml
 
 
 # =========================
@@ -390,3 +391,30 @@ def get_cur_stroke_text(stroke_counter, llm_output):
     # Extract the JSON string
     strokes_str = llm_output[start_index:end_index + len(end_marker)].strip()#[:-1]
     return strokes_str
+
+
+
+
+
+
+def create_default_yaml_config(filename="default_config.yaml"):
+    config = {
+        "concept_to_draw": "car",
+        "seed_mode": "deterministic",
+        "path2save": "results/test",
+        "model": "claude-3-5-sonnet-20240620",
+        "gen_mode": "generation",
+        "res": 50,
+        "cell_size": 12,
+        "stroke_width": 7.0,
+    }
+    with open(filename, "w") as yaml_file:
+        yaml.dump(config, yaml_file)
+    print(f"Default YAML configuration saved to {filename}")
+
+
+
+def load_yaml_config(filename="default_config.yaml"):
+    with open(filename, "r") as yaml_file:
+        config = yaml.safe_load(yaml_file)
+    return config

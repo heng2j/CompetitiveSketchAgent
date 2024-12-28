@@ -4,12 +4,12 @@ import ast
 import cairosvg
 import json
 import os
-import utils
 import traceback
 
 # from dotenv import load_dotenv
 from PIL import Image
-from prompts import sketch_first_prompt, system_prompt, gt_example
+from competitive_sketch_agent.prompts import sketch_first_prompt, system_prompt, gt_example
+from competitive_sketch_agent import utils
 
 
 def call_argparse():
@@ -40,33 +40,30 @@ def call_argparse():
 
 
 class SketchApp:
-    def __init__(self, args):
+    def __init__(self, config):
         # General
-        self.path2save = args.path2save
-        self.target_concept = args.concept_to_draw
+        self.path2save = config["path2save"]
+        self.target_concept = config["concept_to_draw"]
 
         # Grid related
-        self.res = args.res
-        self.num_cells = args.res
-        self.cell_size = args.cell_size
-        self.grid_size = (args.grid_size, args.grid_size)
-        self.init_canvas, self.positions = utils.create_grid_image(res=args.res, cell_size=args.cell_size, header_size=args.cell_size)
+        self.res = config["res"]
+        self.num_cells = config["res"]
+        self.cell_size = config["cell_size"]
+        self.grid_size = (config["res"] + 1) * config["cell_size"]
+        self.init_canvas, self.positions = utils.create_grid_image(res=config["res"], cell_size=config["cell_size"], header_size=config["cell_size"])
         self.init_canvas_str = utils.image_to_str(self.init_canvas)
-        self.cells_to_pixels_map = utils.cells_to_pixels(args.res, args.cell_size, header_size=args.cell_size)
+        self.cells_to_pixels_map = utils.cells_to_pixels(config["res"], config["cell_size"], header_size=config["cell_size"])
 
         # SVG related 
-        self.stroke_width = args.stroke_width
+        self.stroke_width = config["stroke_width"]
         
-        # LLM Setup (you need to provide your ANTHROPIC_API_KEY in your .env file)
+        # LLM Setup
         self.cache = False
         self.max_tokens = 3000
-        # load_dotenv()
-        # claude_key = os.getenv("ANTHROPIC_API_KEY")
-        # self.client = anthropic.Anthropic(api_key=claude_key)
-        self.model = args.model
-        self.input_prompt = sketch_first_prompt.format(concept=args.concept_to_draw, gt_sketches_str=gt_example)
-        self.gen_mode = args.gen_mode
-        self.seed_mode = args.seed_mode
+        self.model = config["model"]
+        self.input_prompt = sketch_first_prompt.format(concept=config["concept_to_draw"], gt_sketches_str=gt_example)
+        self.gen_mode = config["gen_mode"]
+        self.seed_mode = config["seed_mode"]
         
 
     def call_llm(self, system_message, other_msg, additional_args):
@@ -227,8 +224,12 @@ class SketchApp:
 
 # Initialize and run the SketchApp
 if __name__ == '__main__':
-    args = call_argparse()
-    sketch_app = SketchApp(args)
+    # args = call_argparse()
+
+    # Load config from YAML file
+    config = utils.load_yaml_config()
+
+    sketch_app = SketchApp(config=config)
     for attempts in range(3):
         try:
             sketch_app.generate_sketch()

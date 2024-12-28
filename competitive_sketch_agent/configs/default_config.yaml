@@ -1,0 +1,8 @@
+cell_size: 12
+concept_to_draw: car
+gen_mode: generation
+model: claude-3-5-sonnet-20240620
+path2save: results/test
+res: 50
+seed_mode: deterministic
+stroke_width: 7.0
