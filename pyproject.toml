@@ -17,5 +17,5 @@ classifiers = [
 
 # general project dependencies
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10"
 unsloth = "^2024.8"
