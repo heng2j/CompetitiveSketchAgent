@@ -1,0 +1,21 @@
+[build-system]
+requires = ["poetry-core>=1.8.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "competitive_sketch_agent"
+version = "2024.12"
+authors = [
+  "Zhongheng Li <heng2j@gmail.com>"
+]
+description = "This repository contains the code for the GenAI agent backed Competitive Sketching Game"
+classifiers = [
+   "Programming Language :: Python :: 3",
+   "Operating System :: OS Independent",
+]
+
+
+# general project dependencies
+[tool.poetry.dependencies]
+python = "^3.10"
+unsloth = "^2024.8"
